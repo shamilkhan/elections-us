@@ -10,6 +10,8 @@ import UsCounties from './data/test.json';
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
+console.log("process.env logger", process.env);
+
 // UsCounties.features.forEach(f => {
 //   const { STATEFP } = f.properties;
 //   const state = UsStates.features.find(stateFeature => stateFeature.properties.STATEFP === STATEFP);
