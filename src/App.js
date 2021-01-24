@@ -10,8 +10,6 @@ import UsCounties from './data/test.json';
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
-console.log("process.env logger", process.env);
-
 // Viewport settings
 const INITIAL_VIEW_STATE = {
   longitude: -102.497923,
