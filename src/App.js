@@ -12,24 +12,6 @@ const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 console.log("process.env logger", process.env);
 
-// UsCounties.features.forEach(f => {
-//   const { STATEFP } = f.properties;
-//   const state = UsStates.features.find(stateFeature => stateFeature.properties.STATEFP === STATEFP);
-//   if (state && state.properties && state.properties.STUSPS) {
-//     f.properties.STATESHORTNAME = state.properties.STUSPS;
-//   }
-// });
-
-// UsCounties.features.forEach(f => {
-//   const { STATESHORTNAME, NAME } = f.properties;
-//   if (STATESHORTNAME && NAME) {
-//     const votes = Votes.root.row.find(v => v.state === STATESHORTNAME && v.county === NAME);
-//     if (votes) {
-//       f.properties.VOTES = votes;
-//     }
-//   }
-// });
-
 // Viewport settings
 const INITIAL_VIEW_STATE = {
   longitude: -102.497923,
