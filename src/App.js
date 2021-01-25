@@ -27,7 +27,7 @@ const getColor = (f) => {
   const isRepablic = trampVotes > 0.5;
   const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
 
-  return isRepablic ? [200, 0, 0, 400 * Math.pow(trampVotes, 3)] : [0, 160, 180, 400 * Math.pow(bidenVotes, 3)]
+  return isRepablic ? [200, 0, 0, 400 * Math.pow(trampVotes, 2.7)] : [0, 160, 180, 400 * Math.pow(bidenVotes, 2.7)]
 };
 
 function App() {
@@ -69,7 +69,7 @@ function App() {
     lineWidthScale: 20,
     lineWidthMinPixels: 2,
     getFillColor: [0, 0, 0, 200],
-    getLineColor: [70, 70, 70, 200],
+    getLineColor: [200, 200, 200, 200],
     getElevation: 1000,
     getRadius: 100,
     getLineWidth: 50,
