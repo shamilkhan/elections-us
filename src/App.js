@@ -50,8 +50,11 @@ function App() {
       if (!f.properties.VOTES || !f.properties.VOTES.percentage20_Donald_Trump || !f.properties.VOTES.percentage20_Joe_Biden) {
         return [100, 100, 100, 300];
       }
-      const isRepablic = f.properties.VOTES.percentage20_Donald_Trump > 0.5;
-      return isRepablic ? [200, 0, 0, 400] : [0, 160, 180, 400]
+      const trampVotes = Number(f.properties.VOTES.percentage20_Donald_Trump);
+      const isRepablic = trampVotes > 0.5;
+      const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
+    
+      return isRepablic ? [200, 0, 0, 300 * Math.pow(trampVotes, 3)] : [0, 160, 180, 300 * Math.pow(bidenVotes, 3)]
     },
     autoHighlight: true,
   });
@@ -80,10 +83,7 @@ function App() {
       controller={true}
       layers={layers}
     >
-      <StaticMap 
-      // mapStyle='mapbox://styles/mapbox/dark-v10'
-       mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-       />
+      <StaticMap mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN} />
     </DeckGL>
   );
 }
