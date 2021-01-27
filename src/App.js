@@ -31,6 +31,7 @@ const getColor = (f) => {
 };
 
 function App() {
+  const [isDark, setDark] = React.useState(true);
   const countyLayer = new GeoJsonLayer({
     id: 'geojson-layer',
     data: UsCounties,
@@ -53,7 +54,7 @@ function App() {
       const trampVotes = Number(f.properties.VOTES.percentage20_Donald_Trump);
       const isRepablic = trampVotes > 0.5;
       const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
-    
+
       return isRepablic ? [200, 0, 0, 300 * Math.pow(trampVotes, 3)] : [0, 160, 180, 300 * Math.pow(bidenVotes, 3)]
     },
     autoHighlight: true,
@@ -83,7 +84,23 @@ function App() {
       controller={true}
       layers={layers}
     >
-      <StaticMap mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN} />
+      <div style={{
+        "backgroundColor": "#fff",
+        "position": "absolute",
+        "width": "100%",
+        "top": 0,
+        "border": "1px solid #000",
+      }}>
+        filters:
+        <label>
+          Dark theme
+        <input type="checkbox" checked={isDark} onChange={() => setDark(!isDark)} />
+        </label>
+      </div>
+      <StaticMap
+        mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
+        mapStyle={`mapbox://styles/mapbox/${isDark ? "dark-v10" : "light-v10"}`}
+      />
     </DeckGL>
   );
 }
