@@ -1,4 +1,4 @@
-<h1 style="color:red">2020 United States presidential election map </h1>
+# 2020 United States presidential election map
 
 ### Results by county:
 Blue denotes states or congressional districts won by Democrat Joe Biden; red denotes those won by Republican Donald Trump.
