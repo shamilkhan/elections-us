@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "./App.css";
 import React from 'react';
 import DeckGL from '@deck.gl/react';
@@ -67,10 +68,10 @@ function App() {
     stroked: true,
     filled: false,
     wireframe: true,
-    lineWidthScale: 20,
+    lineWidthScale: 5,
     lineWidthMinPixels: 2,
     getFillColor: [0, 0, 0, 200],
-    getLineColor: [200, 200, 200, 200],
+    getLineColor: isDark ? [70, 70, 70, 200] : [200, 200, 200, 200],
     getElevation: 1000,
     getRadius: 100,
     getLineWidth: 50,
@@ -80,6 +81,12 @@ function App() {
 
   return (
     <DeckGL
+      getTooltip={({ object }) => {
+        if (!object) return;
+        return {
+          html: `<div><h1>Hello</h1>world${JSON.stringify(object.properties)}</div>`
+        }
+      }}
       initialViewState={INITIAL_VIEW_STATE}
       controller={true}
       layers={layers}
