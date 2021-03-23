@@ -36,6 +36,8 @@ const getColor = (f) => {
 
 function App() {
   const [isDark, setDark] = React.useState(true);
+  const [hasLayer, setHasLayer] = React.useState(true);
+
   const countyLayer = new GeoJsonLayer({
     id: "geojson-layer",
     data: "/data/next.json",
@@ -92,7 +94,7 @@ function App() {
     <DeckGL
       initialViewState={INITIAL_VIEW_STATE}
       controller={true}
-      layers={layers}
+      layers={hasLayer ? layers : []}
     >
       <div
         style={{
@@ -105,6 +107,14 @@ function App() {
       >
         filters:
         <label>
+          Has Layers
+          <input
+            type="checkbox"
+            checked={hasLayer}
+            onChange={() => setHasLayer(!hasLayer)}
+          />
+        </label>
+        <label>
           Dark theme
           <input
             type="checkbox"
@@ -115,7 +125,12 @@ function App() {
       </div>
       <StaticMap
         mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-        mapStyle={`mapbox://styles/mapbox/${isDark ? "dark-v10" : "light-v10"}`}
+        preventStyleDiffing={true}
+        mapStyle={
+          isDark
+            ? "mapbox://styles/uberdata/cjfxhlikmaj1b2soyzevnywgs"
+            : "mapbox://styles/uberdata/cjfyl03kp1tul2smf5v2tbdd4"
+        }
       />
     </DeckGL>
   );
