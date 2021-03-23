@@ -90,14 +90,6 @@ function App() {
 
   return (
     <DeckGL
-      getTooltip={({ object }) => {
-        if (!object) return;
-        return {
-          html: `<div><h1>Hello</h1>world${JSON.stringify(
-            object.properties
-          )}</div>`,
-        };
-      }}
       initialViewState={INITIAL_VIEW_STATE}
       controller={true}
       layers={layers}
