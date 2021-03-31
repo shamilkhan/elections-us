@@ -3,7 +3,7 @@
 ## Results by county:
 Blue denotes states or congressional districts won by Democrat Joe Biden; red denotes those won by Republican Donald Trump.
 
-<img src="https://raw.githubusercontent.com/shamilkhan/us_election_map/master/public/demo.png" width="500px" />
+<img src="https://raw.githubusercontent.com/shamilkhan/us_election_map/master/public/demo.svg" width="500px" />
 
 ## Run Project locally
 
