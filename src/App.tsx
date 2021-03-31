@@ -36,9 +36,7 @@ const getColor = (f) => {
 };
 
 function App() {
-  const [isDark, setDark] = React.useState(true);
-  const [hasLayer, setHasLayer] = React.useState(true);
-
+  const isDark = true;
   const countyLayer = new GeoJsonLayer({
     id: "geojson-layer",
     data: "/data/next.json",
@@ -92,49 +90,24 @@ function App() {
   const layers = [countyLayer, stateLayer];
 
   return (
-    <DeckGL
-      initialViewState={INITIAL_VIEW_STATE}
-      controller={true}
-      layers={hasLayer ? layers : []}
-    >
-      <div
-        style={{
-          backgroundColor: "#fff",
-          position: "absolute",
-          width: "100%",
-          top: 0,
-          border: "1px solid #000",
-        }}
+    <>
+      <DeckGL
+        initialViewState={INITIAL_VIEW_STATE}
+        controller={true}
+        layers={layers}
       >
         <MapCard />
-        filters:
-        <label>
-          Has Layers
-          <input
-            type="checkbox"
-            checked={hasLayer}
-            onChange={() => setHasLayer(!hasLayer)}
-          />
-        </label>
-        <label>
-          Dark theme
-          <input
-            type="checkbox"
-            checked={isDark}
-            onChange={() => setDark(!isDark)}
-          />
-        </label>
-      </div>
-      <StaticMap
-        mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-        preventStyleDiffing={true}
-        mapStyle={
-          isDark
-            ? "mapbox://styles/uberdata/cjfxhlikmaj1b2soyzevnywgs"
-            : "mapbox://styles/uberdata/cjfyl03kp1tul2smf5v2tbdd4"
-        }
-      />
-    </DeckGL>
+        <StaticMap
+          mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
+          preventStyleDiffing={true}
+          mapStyle={
+            isDark
+              ? "mapbox://styles/uberdata/cjfxhlikmaj1b2soyzevnywgs"
+              : "mapbox://styles/uberdata/cjfyl03kp1tul2smf5v2tbdd4"
+          }
+        />
+      </DeckGL>
+    </>
   );
 }
 
