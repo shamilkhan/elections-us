@@ -4,6 +4,7 @@ import React from "react";
 import DeckGL from "@deck.gl/react";
 import { StaticMap } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
+import { MapCard } from "./card";
 
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -105,6 +106,7 @@ function App() {
           border: "1px solid #000",
         }}
       >
+        <MapCard />
         filters:
         <label>
           Has Layers
