@@ -1,7 +1,9 @@
+// @ts-ignore
 import React from "react";
 import { Card, StyledBody } from "baseui/card";
 
-export const CountyData = ({ data }: { data: Record<string, unknown> }) => {
+export const CountyData = ({ data }: { data: any }) => {
+  if (!data.VOTES) return null;
   return (
     <Card
       overrides={{
@@ -14,14 +16,13 @@ export const CountyData = ({ data }: { data: Record<string, unknown> }) => {
           },
         },
       }}
-      title="County data:"
+      title={`${data.VOTES.county} (${data.VOTES.state}) `}
     >
       <StyledBody>
-        <ul>
-          {Object.entries(data).map(([key, value]) => (
-            <li>{`${key} ${JSON.stringify(value)}`}</li>
-          ))}
-        </ul>
+        Trump:
+        {data.VOTES.percentage20_Donald_Trump}
+        Biden:
+        {data.VOTES.percentage20_Joe_Biden}
       </StyledBody>
     </Card>
   );
