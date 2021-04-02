@@ -1,9 +1,11 @@
 // @ts-nocheck
-import React from "react";
+import "./App.css";
+import React, { useState } from "react";
 import DeckGL from "@deck.gl/react";
 import { StaticMap } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { MapCard } from "./card";
+import { CountyData } from "./countyData";
 
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -34,11 +36,40 @@ const getColor = (f) => {
     : [0, 160, 180, 400 * Math.pow(bidenVotes, 2.7)];
 };
 
+const useStateData = () => {
+  const [data, setData] = useState();
+  React.useEffect(() => {
+    const loadData = async () => {
+      setData(await (await fetch("/data/state.json")).json());
+    };
+    loadData();
+  }, []);
+  return data;
+};
+
+const useCountyData = () => {
+  const [data, setData] = useState();
+  React.useEffect(() => {
+    const loadData = async () => {
+      setData(await (await fetch("/data/next.json")).json());
+    };
+    loadData();
+  });
+  return data;
+};
+
 function App() {
+  const stateData = useStateData();
+  const countyDataState = useCountyData();
+
   const isDark = true;
+  const [countyData, setCountyData] = useState(null);
+
+  console.log("countyDataState", countyDataState);
+
   const countyLayer = new GeoJsonLayer({
     id: "geojson-layer",
-    data: "/data/next.json",
+    data: countyDataState,
     pickable: true,
     stroked: false,
     filled: true,
@@ -72,7 +103,7 @@ function App() {
 
   const stateLayer = new GeoJsonLayer({
     id: "geojson-layer-states",
-    data: "/data/state.json",
+    data: stateData,
     pickable: true,
     stroked: true,
     filled: false,
@@ -80,13 +111,32 @@ function App() {
     lineWidthScale: 5,
     lineWidthMinPixels: 2,
     getFillColor: [0, 0, 0, 200],
-    getLineColor: isDark ? [70, 70, 70, 200] : [200, 200, 200, 200],
+    getLineColor: [70, 70, 70, 200],
     getElevation: 1000,
     getRadius: 100,
     getLineWidth: 50,
   });
 
-  const layers = [countyLayer, stateLayer];
+  const stateLayerHover = new GeoJsonLayer({
+    id: "geojson-layer-states__hover",
+    data: stateData &&
+      countyData && {
+        ...stateData,
+        features: stateData.features.filter(
+          (f) => f.properties.STATEFP === countyData.properties.STATEFP
+        ),
+      },
+    pickable: true,
+    stroked: true,
+    filled: false,
+    wireframe: true,
+    lineWidthScale: 5,
+    lineWidthMinPixels: 2,
+    getLineColor: [200, 200, 70, 200],
+    getLineWidth: 300,
+  });
+
+  const layers = [countyLayer, stateLayer, stateLayerHover];
 
   return (
     <>
@@ -94,6 +144,10 @@ function App() {
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         layers={layers}
+        onHover={({ object }) => {
+          setCountyData(object || null);
+          return null;
+        }}
       >
         <MapCard />
         <StaticMap
@@ -106,6 +160,7 @@ function App() {
           }
         />
       </DeckGL>
+      {countyData && <CountyData data={countyData.properties} />}
     </>
   );
 }
