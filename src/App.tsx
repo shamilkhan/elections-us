@@ -39,7 +39,7 @@ function App() {
   const isDark = true;
   const countyLayer = new GeoJsonLayer({
     id: "geojson-layer",
-    data: "/data/next.json",
+    data: "/data/next.geojson",
     pickable: true,
     stroked: false,
     filled: true,
@@ -73,7 +73,7 @@ function App() {
 
   const stateLayer = new GeoJsonLayer({
     id: "geojson-layer-states",
-    data: "/data/state.json",
+    data: "/data/state.geojson",
     pickable: true,
     stroked: true,
     filled: false,
