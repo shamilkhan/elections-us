@@ -53,7 +53,7 @@ const useCountyData = () => {
       setData(await (await fetch("/data/next.json")).json());
     };
     loadData();
-  });
+  }, []);
   return data;
 };
 
