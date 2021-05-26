@@ -1,9 +1,6 @@
 // @ts-ignore
 import React from "react";
 import { Card } from "baseui/card";
-import { StyledTableBodyCell } from "baseui/table-semantic";
-// @ts-ignore
-import Check from "baseui/icon/check";
 import { Table } from "baseui/table-semantic/";
 
 export const CountyData = ({ data }: { data: any }) => {
@@ -62,31 +59,6 @@ export const CountyData = ({ data }: { data: any }) => {
                     ? "rgba(138, 2, 0, 0.4)"
                     : "transparent",
               },
-            },
-          },
-          TableBodyCell: {
-            component: ({ $colIndex, $rowIndex, children }: any) => {
-              const isTrump =
-                maxValue === +data.VOTES.percentage20_Donald_Trump &&
-                $rowIndex === 1;
-              const isBiden =
-                maxValue === +data.VOTES.percentage20_Joe_Biden &&
-                $rowIndex === 0;
-
-              if ($colIndex === 0 && (isTrump || isBiden)) {
-                return (
-                  <StyledTableBodyCell>
-                    <div className="wrapper">
-                      {children}
-                      <span className="check-container">
-                        <Check />
-                      </span>
-                    </div>
-                  </StyledTableBodyCell>
-                );
-              }
-
-              return <StyledTableBodyCell>{children}</StyledTableBodyCell>;
             },
           },
         }}
