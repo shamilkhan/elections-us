@@ -1,31 +1,43 @@
 // @ts-ignore
 import React from "react";
 import { Card } from "baseui/card";
-import { Table } from "baseui/table-semantic/";
+import { TableBuilder, TableBuilderColumn } from "baseui/table-semantic/";
 
-export const CountyData = ({ data }: { data: any }) => {
-  if (!data.VOTES) return null;
-
-  const COLUMNS = ["", "Party", "Votes", "PCT."];
-  const formateNumber = new Intl.NumberFormat("en-US");
-
-  const votesData = {
-    biden: {
-      count: formateNumber.format(data.VOTES.votes20_Joe_Biden),
+const getVotingData = (data: any) => {
+  return [
+    {
+      name: "Joe Biden",
+      party: "Dem.",
+      count: data.VOTES.votes20_Joe_Biden,
       percentage: `${(+data.VOTES.percentage20_Joe_Biden * 100).toFixed(1)}%`,
+      color: `#155a66`,
+      countyWiningColor: "rgba(21, 90, 102, 0.4)",
     },
-    trump: {
-      count: formateNumber.format(data.VOTES.votes20_Donald_Trump),
+    {
+      name: "Donald Trump",
+      party: "Rep.",
+      count: data.VOTES.votes20_Donald_Trump,
       percentage: `${(+data.VOTES.percentage20_Donald_Trump * 100).toFixed(
         1
       )}%`,
+      color: `#8a0200`,
+      countyWiningColor: "rgba(138, 2, 0, 0.4)",
     },
-  };
+  ];
+};
 
-  const maxValue = Math.max(
-    +data.VOTES.percentage20_Joe_Biden,
-    +data.VOTES.percentage20_Donald_Trump
-  );
+export const CountyData = ({ data }: { data: any }) => {
+  if (!data.VOTES) return null;
+  const formateNumber = new Intl.NumberFormat("en-US");
+  const votesData = getVotingData(data);
+
+  const maxValue = Math.max(...votesData.map((voteData) => +voteData.count));
+
+  const getBackgroundColor = (rowIndex: number) => {
+    return maxValue === +votesData[rowIndex].count
+      ? votesData[rowIndex].countyWiningColor
+      : "";
+  };
 
   return (
     <Card
@@ -41,43 +53,30 @@ export const CountyData = ({ data }: { data: any }) => {
       }}
       title={`${data.VOTES.county} (${data.VOTES.state}) `}
     >
-      <Table
+      <TableBuilder
         overrides={{
           TableBodyRow: {
-            style: {
-              ":first-child": {
-                borderLeft: "15px solid #155a66",
-                backgroundColor:
-                  maxValue === +data.VOTES.percentage20_Joe_Biden
-                    ? "rgba(21, 90, 102, 0.4)"
-                    : "transparent",
-              },
-              ":last-child": {
-                borderLeft: "15px solid #8a0200",
-                backgroundColor:
-                  maxValue === +data.VOTES.percentage20_Donald_Trump
-                    ? "rgba(138, 2, 0, 0.4)"
-                    : "transparent",
-              },
-            },
+            style: ({ $rowIndex }) => ({
+              borderLeft: `15px solid ${votesData[$rowIndex].color}`,
+              backgroundColor: getBackgroundColor($rowIndex),
+            }),
           },
         }}
-        columns={COLUMNS}
-        data={[
-          [
-            "Joe Biden",
-            "Dem.",
-            votesData.biden.count,
-            votesData.biden.percentage,
-          ],
-          [
-            "Donald Trump",
-            "Rep.",
-            votesData.trump.count,
-            votesData.trump.percentage,
-          ],
-        ]}
-      />
+        data={votesData}
+      >
+        <TableBuilderColumn header="" id="name">
+          {(row) => row.name}
+        </TableBuilderColumn>
+        <TableBuilderColumn header="Party" id="party">
+          {(row) => row.party}
+        </TableBuilderColumn>
+        <TableBuilderColumn header="Votes" id="count">
+          {(row) => formateNumber.format(row.count)}
+        </TableBuilderColumn>
+        <TableBuilderColumn header="PCT." id="percentage">
+          {(row) => row.percentage}
+        </TableBuilderColumn>
+      </TableBuilder>
     </Card>
   );
 };
