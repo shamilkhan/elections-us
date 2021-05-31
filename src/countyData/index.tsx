@@ -64,7 +64,7 @@ export const CountyData = ({ data }: { data: any }) => {
         }}
         data={votesData}
       >
-        <TableBuilderColumn header="" id="name">
+        <TableBuilderColumn header="Candidate" id="name">
           {(row) => row.name}
         </TableBuilderColumn>
         <TableBuilderColumn header="Party" id="party">
