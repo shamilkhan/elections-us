@@ -81,23 +81,6 @@ function App() {
     getElevation: 100,
     getRadius: 100,
     getLineWidth: 100,
-    highlightColor: ({ object: f }) => {
-      if (
-        !f.properties.VOTES ||
-        !f.properties.VOTES.percentage20_Donald_Trump ||
-        !f.properties.VOTES.percentage20_Joe_Biden
-      ) {
-        return [100, 100, 100, 300];
-      }
-      const trampVotes = Number(f.properties.VOTES.percentage20_Donald_Trump);
-      const isRepablic = trampVotes > 0.5;
-      const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
-
-      return isRepablic
-        ? [200, 0, 0, 300 * Math.pow(trampVotes, 3)]
-        : [0, 160, 180, 300 * Math.pow(bidenVotes, 3)];
-    },
-    autoHighlight: true,
   });
 
   const stateLayer = new GeoJsonLayer({
