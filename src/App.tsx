@@ -58,12 +58,18 @@ const colorThemes = [
 ];
 
 const currentColorTheme = colorThemes[2];
+const transparencyLevel = 200;
+const errColor = [100, 100, 100, transparencyLevel];
+const stateFillColor = [0, 0, 0, transparencyLevel];
+const stateLineColor = [115, 115, 115, transparencyLevel];
+const stateLineColorHovered = [200, 200, 70, transparencyLevel];
+const firstVotesLevel = 0.55;
 
 const convertHEXcolorToRGBA = (hexColor) => [
   parseInt(hexColor[1] + hexColor[2], 16),
   parseInt(hexColor[3] + hexColor[4], 16),
   parseInt(hexColor[5] + hexColor[6], 16),
-  255,
+  transparencyLevel,
 ];
 
 // Viewport settings
@@ -81,13 +87,12 @@ const getColor = (f) => {
     !f.properties.VOTES.percentage20_Donald_Trump ||
     !f.properties.VOTES.percentage20_Joe_Biden
   ) {
-    return [100, 100, 100, 100];
+    return errColor;
   }
 
   const trampVotes = Number(f.properties.VOTES.percentage20_Donald_Trump);
   const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
   const isTrump = trampVotes > bidenVotes;
-  const firstVotesLevel = 0.55;
   const winnerVotesNormalized = Math.min(
     Math.max(isTrump ? trampVotes : bidenVotes, firstVotesLevel),
     1
@@ -155,8 +160,8 @@ function App() {
     wireframe: true,
     lineWidthScale: 5,
     lineWidthMinPixels: 2,
-    getFillColor: [0, 0, 0, 200],
-    getLineColor: [70, 70, 70, 200],
+    getFillColor: stateFillColor,
+    getLineColor: stateLineColor,
     getElevation: 1000,
     getRadius: 100,
     getLineWidth: 50,
@@ -177,7 +182,7 @@ function App() {
     wireframe: true,
     lineWidthScale: 5,
     lineWidthMinPixels: 2,
-    getLineColor: [200, 200, 70, 200],
+    getLineColor: stateLineColorHovered,
     getLineWidth: 300,
   });
 
