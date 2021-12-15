@@ -9,6 +9,63 @@ import { CountyData } from "./countyData";
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
+const colorThemes = [
+  [
+    ["#B1D9EE", "#7FB8D9", "#387CA5", "#1E6995"],
+    ["#FFCABA", "#FFAA8F", "#FF774C", "#E95425"],
+  ],
+  [
+    [
+      "#E6F4F9",
+      "#CCEAF3",
+      "#B3DFED",
+      "#99D4E7",
+      "#80CAE1",
+      "#66BFDA",
+      "#4DB4D4",
+      "#33A9CE",
+      "#1A9FC8",
+      "#0094C2",
+    ],
+    [
+      "#F9EAE6",
+      "#F3D5CC",
+      "#EDC0B3",
+      "#E7AB99",
+      "#E19780",
+      "#DA8266",
+      "#D46D4D",
+      "#CE5833",
+      "#C8431A",
+      "#C22E00",
+    ],
+  ],
+  [
+    [
+      "#E8EDF2",
+      "#D1DAE5",
+      "#BAC8D8",
+      "#A3B6CB",
+      "#8DA4BE",
+      "#7691B1",
+      "#5F7FA4",
+      "#486D97",
+      "#315A8A",
+      "#1A487D",
+    ],
+    ["#F3D5CC", "#EDC0B3", "#E19780", "#D46D4D", "#CE5833", "#C8431A"],
+  ],
+];
+
+const currentColorTheme = colorThemes[2];
+
+const convertHEXcolorToRGBA = (hexColor) => [
+  parseInt(hexColor[1] + hexColor[2], 16),
+  parseInt(hexColor[3] + hexColor[4], 16),
+  parseInt(hexColor[5] + hexColor[6], 16),
+  255,
+];
+
 // Viewport settings
 const INITIAL_VIEW_STATE = {
   longitude: -102.497923,
@@ -26,13 +83,19 @@ const getColor = (f) => {
   ) {
     return [100, 100, 100, 100];
   }
-  const trampVotes = Number(f.properties.VOTES.percentage20_Donald_Trump);
-  const isRepablic = trampVotes > 0.5;
-  const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
 
-  return isRepablic
-    ? [200, 0, 0, 400 * Math.pow(trampVotes, 2.7)]
-    : [0, 160, 180, 400 * Math.pow(bidenVotes, 2.7)];
+  const trampVotes = Number(f.properties.VOTES.percentage20_Donald_Trump);
+  const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
+  const isTrump = trampVotes > bidenVotes;
+  const firstVotesLevel = 0.55;
+  const winnerVotesNormalized = Math.min(
+    Math.max(isTrump ? trampVotes : bidenVotes, firstVotesLevel),
+    1
+  );
+  const palette = currentColorTheme[isTrump ? 1 : 0];
+  const step = (1 - firstVotesLevel) / (palette.length - 1);
+  const index = Math.ceil((winnerVotesNormalized - firstVotesLevel) / step);
+  return convertHEXcolorToRGBA(palette[index]);
 };
 
 const useStateData = () => {
