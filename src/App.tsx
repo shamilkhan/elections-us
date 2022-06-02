@@ -59,9 +59,6 @@ const colorThemes = [
 
 const currentColorTheme = colorThemes[1];
 const errColor = [100, 100, 100];
-const stateFillColor = [0, 0, 0];
-const stateLineColor = [115, 115, 115];
-const stateLineColorHovered = [200, 200, 70];
 const firstVotesLevel = 0.5;
 const lastVotesLevel = 0.9;
 
@@ -103,17 +100,6 @@ const getColor = (f) => {
   return convertHEXcolorToRGBA(palette[index]);
 };
 
-const useStateData = () => {
-  const [data, setData] = useState();
-  React.useEffect(() => {
-    const loadData = async () => {
-      setData(await (await fetch("/data/state.json")).json());
-    };
-    loadData();
-  }, []);
-  return data;
-};
-
 const useCountyData = () => {
   const [data, setData] = useState();
   React.useEffect(() => {
@@ -126,13 +112,10 @@ const useCountyData = () => {
 };
 
 function App() {
-  const stateData = useStateData();
   const countyDataState = useCountyData();
 
   const isDark = true;
   const [countyData, setCountyData] = useState(null);
-
-  console.log("countyDataState", countyDataState);
 
   const countyLayer = new GeoJsonLayer({
     id: "geojson-layer",
@@ -145,48 +128,12 @@ function App() {
     lineWidthScale: 20,
     lineWidthMinPixels: 2,
     getFillColor: getColor,
-    getLineColor: getColor,
     getElevation: 100,
     getRadius: 100,
     getLineWidth: 100,
   });
 
-  const stateLayer = new GeoJsonLayer({
-    id: "geojson-layer-states",
-    data: stateData,
-    pickable: true,
-    stroked: true,
-    filled: false,
-    wireframe: true,
-    lineWidthScale: 5,
-    lineWidthMinPixels: 2,
-    getFillColor: stateFillColor,
-    getLineColor: stateLineColor,
-    getElevation: 1000,
-    getRadius: 100,
-    getLineWidth: 50,
-  });
-
-  const stateLayerHover = new GeoJsonLayer({
-    id: "geojson-layer-states__hover",
-    data: stateData &&
-      countyData && {
-        ...stateData,
-        features: stateData.features.filter(
-          (f) => f.properties.STATEFP === countyData.properties.STATEFP
-        ),
-      },
-    pickable: true,
-    stroked: true,
-    filled: false,
-    wireframe: true,
-    lineWidthScale: 5,
-    lineWidthMinPixels: 2,
-    getLineColor: stateLineColorHovered,
-    getLineWidth: 300,
-  });
-
-  const layers = [countyLayer, stateLayer, stateLayerHover];
+  const layers = [countyLayer];
 
   return (
     <>
