@@ -5,7 +5,6 @@ import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import { BaseProvider, DarkTheme } from "baseui";
-// @ts-ignore
 import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 
