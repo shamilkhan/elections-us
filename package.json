@@ -2,9 +2,6 @@
   "name": "us_elections_map",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": ">14.x"
-  },
   "dependencies": {
     "@danmarshall/deckgl-typings": "^4.5.1",
     "@testing-library/jest-dom": "^5.11.4",
