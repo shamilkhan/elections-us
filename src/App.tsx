@@ -101,17 +101,6 @@ const getColor = (f) => {
   return convertHEXcolorToRGBA(palette[index]);
 };
 
-const useCountyData1 = () => {
-  const [data, setData] = useState();
-  React.useEffect(() => {
-    const loadData = async () => {
-      setData(await (await fetch("/data/next.json")).json());
-    };
-    loadData();
-  }, []);
-  return data;
-};
-
 const useCountyData = () => {
   const [data, setData] = useState();
   React.useEffect(() => {
