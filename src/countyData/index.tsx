@@ -8,16 +8,16 @@ const getVotingData = (data: any) => {
     {
       name: "Joe Biden",
       party: "Dem.",
-      count: data.VOTES.votes20_Joe_Biden,
-      percentage: `${(+data.VOTES.percentage20_Joe_Biden * 100).toFixed(1)}%`,
+      count: data.biden_h,
+      percentage: `${(+data.biden_h / +data.total_h * 100).toFixed(1)}%`,
       color: `#155a66`,
       countyWiningColor: "rgba(21, 90, 102, 0.4)",
     },
     {
       name: "Donald Trump",
       party: "Rep.",
-      count: data.VOTES.votes20_Donald_Trump,
-      percentage: `${(+data.VOTES.percentage20_Donald_Trump * 100).toFixed(
+      count: data.trump_h,
+      percentage: `${(+data.trump_h / +data.total_h * 100).toFixed(
         1
       )}%`,
       color: `#8a0200`,
@@ -27,7 +27,7 @@ const getVotingData = (data: any) => {
 };
 
 export const CountyData = ({ data }: { data: any }) => {
-  if (!data.VOTES) return null;
+  if (!data.total_h) return null;
   const formateNumber = new Intl.NumberFormat("en-US");
   const votesData = getVotingData(data);
 
@@ -51,7 +51,7 @@ export const CountyData = ({ data }: { data: any }) => {
           },
         },
       }}
-      title={`${data.VOTES.county} (${data.VOTES.state}) `}
+      title={`${data.name} (${data.state}) `}
     >
       <TableBuilder
         overrides={{
