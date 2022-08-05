@@ -79,20 +79,21 @@ const INITIAL_VIEW_STATE = {
 
 const getColor = (f) => {
   if (
-    !f.properties.VOTES ||
-    !f.properties.VOTES.percentage20_Donald_Trump ||
-    !f.properties.VOTES.percentage20_Joe_Biden
+    !f.properties.total_h ||
+    !f.properties.trump_h ||
+    !f.properties.biden_h
   ) {
     return errColor;
   }
 
-  const trampVotes = Number(f.properties.VOTES.percentage20_Donald_Trump);
-  const bidenVotes = Number(f.properties.VOTES.percentage20_Joe_Biden);
+  const trampVotes = Number(f.properties.trump_h / f.properties.total_h);
+  const bidenVotes = Number(f.properties.biden_h / f.properties.total_h);
   const isTrump = trampVotes > bidenVotes;
   const winnerVotesNormalized = Math.min(
     Math.max(isTrump ? trampVotes : bidenVotes, firstVotesLevel),
     lastVotesLevel
   );
+
   const palette = currentColorTheme[isTrump ? 1 : 0];
   const step = (lastVotesLevel - firstVotesLevel) / (palette.length - 1);
   const index = Math.ceil((winnerVotesNormalized - firstVotesLevel) / step);
@@ -104,7 +105,7 @@ const useCountyData = () => {
   const [data, setData] = useState();
   React.useEffect(() => {
     const loadData = async () => {
-      setData(await (await fetch("/data/next.json")).json());
+      setData(await (await fetch("/data/us-counties-results.json")).json());
     };
     loadData();
   }, []);
