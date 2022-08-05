@@ -3,31 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.47",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.7.4",
+    "web-vitals": "^2.1.4",
     "@danmarshall/deckgl-typings": "^4.5.1",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
     "@types/react-map-gl": "^5.2.9",
     "@types/styletron-engine-atomic": "^1.1.0",
     "@types/styletron-react": "^5.0.2",
     "baseui": "^9.112.0",
     "deck.gl": "^8.3.15",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "react-map-gl": "5.2.5",
-    "react-scripts": "4.0.1",
     "styletron-engine-atomic": "^1.4.7",
-    "styletron-react": "^6.0.1",
-    "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4"
-  },
-  "resolutions": {
-    "@types/react": "17.0.39",
-    "@types/react-dom": "17.0.11"
+    "styletron-react": "^6.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,8 +32,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src",
     "lint:fix": "yarn lint --fix",
-    "prepare": "husky install",
-    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions"
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
