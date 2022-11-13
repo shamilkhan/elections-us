@@ -1,82 +1,40 @@
 // @ts-ignore
 import React from "react";
-import { Card } from "baseui/card";
-import { TableBuilder, TableBuilderColumn } from "baseui/table-semantic/";
+import { CursorPosition } from "../App";
+import { CountyDataCard } from "./ui";
 
-const getVotingData = (data: any) => {
-  return [
-    {
-      name: "Joe Biden",
-      party: "Dem.",
-      count: data.VOTES.votes20_Joe_Biden,
-      percentage: `${(+data.VOTES.percentage20_Joe_Biden * 100).toFixed(1)}%`,
-      color: `#155a66`,
-      countyWiningColor: "rgba(21, 90, 102, 0.4)",
+// Get card's position on the display by cursor position
+const getPosition = (cursorPosition: CursorPosition) => {
+  const left = cursorPosition.x - 30 > 16 ? cursorPosition.x - 30 : 16;
+  const top = cursorPosition.y + 40;
+
+  return {
+    left: left < window.innerWidth - 482 ? left : window.innerWidth - 482,
+    top: top < window.innerHeight - 210 ? top : top - 235,
+    pin: {
+      direction: top < window.innerHeight - 210 ? "up" : "down",
+      left:
+        left < window.innerWidth - 482
+          ? 26
+          : 26 + left - window.innerWidth + 482 < 433
+          ? 26 + left - window.innerWidth + 482
+          : 433,
     },
-    {
-      name: "Donald Trump",
-      party: "Rep.",
-      count: data.VOTES.votes20_Donald_Trump,
-      percentage: `${(+data.VOTES.percentage20_Donald_Trump * 100).toFixed(
-        1
-      )}%`,
-      color: `#8a0200`,
-      countyWiningColor: "rgba(138, 2, 0, 0.4)",
-    },
-  ];
+  };
 };
 
-export const CountyData = ({ data }: { data: any }) => {
-  if (!data.VOTES) return null;
-  const formateNumber = new Intl.NumberFormat("en-US");
-  const votesData = getVotingData(data);
+type Props = {
+  data: any;
+  cursorPosition: CursorPosition | null;
+};
 
-  const maxValue = Math.max(...votesData.map((voteData) => +voteData.count));
+export const CountyData = ({ data, cursorPosition }: Props) => {
+  if (!data.total_h || !cursorPosition) return null;
+  const { left, top, pin } = getPosition(cursorPosition);
 
-  const getBackgroundColor = (rowIndex: number) => {
-    return maxValue === +votesData[rowIndex].count
-      ? votesData[rowIndex].countyWiningColor
-      : "";
-  };
-
-  return (
-    <Card
-      overrides={{
-        Root: {
-          style: {
-            top: "1.5rem",
-            right: "1.5rem",
-            width: "30rem",
-            position: "absolute",
-          },
-        },
-      }}
-      title={`${data.VOTES.county} (${data.VOTES.state}) `}
-    >
-      <TableBuilder
-        overrides={{
-          TableBodyRow: {
-            style: ({ $rowIndex }) => ({
-              borderLeft: `15px solid ${votesData[$rowIndex].color}`,
-              backgroundColor: getBackgroundColor($rowIndex),
-            }),
-          },
-        }}
-        data={votesData}
-      >
-        <TableBuilderColumn header="Candidate" id="name">
-          {(row) => row.name}
-        </TableBuilderColumn>
-        <TableBuilderColumn header="Party" id="party">
-          {(row) => row.party}
-        </TableBuilderColumn>
-        <TableBuilderColumn header="Votes" id="count">
-          {(row) => formateNumber.format(row.count)}
-        </TableBuilderColumn>
-        <TableBuilderColumn header="PCT." id="percentage">
-          {(row) => row.percentage}
-        </TableBuilderColumn>
-      </TableBuilder>
-    </Card>
+  return left && top ? (
+    <CountyDataCard x={left} y={top} pin={pin} data={data} />
+  ) : (
+    ""
   );
 };
