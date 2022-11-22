@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import DeckGL from "@deck.gl/react";
 import { StaticMap } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { MapCard } from "./card";
 import { CountyData } from "./countyData";
 
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
+
+export type CursorPosition = {
+  x: number;
+  y: number;
+};
 
 const colorThemes = [
   [
@@ -78,11 +82,7 @@ const INITIAL_VIEW_STATE = {
 };
 
 const getColor = (f) => {
-  if (
-    !f.properties.total_h ||
-    !f.properties.trump_h ||
-    !f.properties.biden_h
-  ) {
+  if (!f.properties.total_h || !f.properties.trump_h || !f.properties.biden_h) {
     return errColor;
   }
 
@@ -117,6 +117,9 @@ function App() {
 
   const isDark = true;
   const [countyData, setCountyData] = useState(null);
+  const [cursorPosition, setCursorPosition] = useState<CursorPosition | null>(
+    null
+  );
 
   const countyLayer = new GeoJsonLayer({
     id: "geojson-layer",
@@ -142,12 +145,18 @@ function App() {
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         layers={layers}
-        onHover={({ object }) => {
+        onHover={({ object, x, y }) => {
+          if (x >= 0 && y >= 0) {
+            setCursorPosition({ x, y });
+          } else {
+            setCursorPosition(null);
+          }
           setCountyData(object || null);
           return null;
         }}
+        onDrag={() => setCursorPosition(null)}
       >
-        <MapCard />
+        {/* <MapCard /> */}
         <StaticMap
           mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
           preventStyleDiffing={true}
@@ -158,7 +167,12 @@ function App() {
           }
         />
       </DeckGL>
-      {countyData && <CountyData data={countyData.properties} />}
+      {countyData && (
+        <CountyData
+          data={countyData.properties}
+          cursorPosition={cursorPosition}
+        />
+      )}
     </>
   );
 }

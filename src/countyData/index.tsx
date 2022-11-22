@@ -1,82 +1,47 @@
 // @ts-ignore
-import React from "react";
-import { Card } from "baseui/card";
-import { TableBuilder, TableBuilderColumn } from "baseui/table-semantic/";
+import { StyledEngineProvider } from "@mui/material";
+import { useEffect, useState } from "react";
+import { CursorPosition } from "../App";
+import { CandidatesInfo } from "./candidatesInfo";
+import { CardHeader } from "./cardHeader";
+import { BidenDiagram, TrumpDiagram } from "./diagram";
+import { CountyCard, DiagramWrapper } from "./styled";
+import { getPosition } from "./utils";
 
-const getVotingData = (data: any) => {
-  return [
-    {
-      name: "Joe Biden",
-      party: "Dem.",
-      count: data.biden_h,
-      percentage: `${(+data.biden_h / +data.total_h * 100).toFixed(1)}%`,
-      color: `#155a66`,
-      countyWiningColor: "rgba(21, 90, 102, 0.4)",
-    },
-    {
-      name: "Donald Trump",
-      party: "Rep.",
-      count: data.trump_h,
-      percentage: `${(+data.trump_h / +data.total_h * 100).toFixed(
-        1
-      )}%`,
-      color: `#8a0200`,
-      countyWiningColor: "rgba(138, 2, 0, 0.4)",
-    },
-  ];
+type Props = {
+  data: any;
+  cursorPosition: CursorPosition | null;
 };
 
-export const CountyData = ({ data }: { data: any }) => {
-  if (!data.total_h) return null;
-  const formateNumber = new Intl.NumberFormat("en-US");
-  const votesData = getVotingData(data);
+export const CountyData = ({ data, cursorPosition }: Props) => {
+  if (!data.total_h || !cursorPosition) return null;
+  const { left, top, pin } = getPosition(cursorPosition);
 
-  const maxValue = Math.max(...votesData.map((voteData) => +voteData.count));
+  const [bidenPercentage, setBidenPercentage] = useState<number>(0);
+  useEffect(() => {
+    setBidenPercentage(Math.round((+data.biden_h / +data.total_h) * 100));
+  }, [data.trump_h, data.biden_h]);
 
-  const getBackgroundColor = (rowIndex: number) => {
-    return maxValue === +votesData[rowIndex].count
-      ? votesData[rowIndex].countyWiningColor
-      : "";
-  };
-
-  return (
-    <Card
-      overrides={{
-        Root: {
-          style: {
-            top: "1.5rem",
-            right: "1.5rem",
-            width: "30rem",
-            position: "absolute",
-          },
-        },
-      }}
-      title={`${data.name} (${data.state}) `}
-    >
-      <TableBuilder
-        overrides={{
-          TableBodyRow: {
-            style: ({ $rowIndex }) => ({
-              borderLeft: `15px solid ${votesData[$rowIndex].color}`,
-              backgroundColor: getBackgroundColor($rowIndex),
-            }),
-          },
-        }}
-        data={votesData}
-      >
-        <TableBuilderColumn header="Candidate" id="name">
-          {(row) => row.name}
-        </TableBuilderColumn>
-        <TableBuilderColumn header="Party" id="party">
-          {(row) => row.party}
-        </TableBuilderColumn>
-        <TableBuilderColumn header="Votes" id="count">
-          {(row) => formateNumber.format(row.count)}
-        </TableBuilderColumn>
-        <TableBuilderColumn header="PCT." id="percentage">
-          {(row) => row.percentage}
-        </TableBuilderColumn>
-      </TableBuilder>
-    </Card>
+  return left && top ? (
+    <StyledEngineProvider injectFirst>
+      <CountyCard left={left} top={top} pin={pin}>
+        <CardHeader county={data.name} state={data.state}></CardHeader>
+        <CandidatesInfo
+          bidenVal={data.biden_h}
+          bidenPer={bidenPercentage}
+          trumpVal={data.trump_h}
+          trumpPer={100 - bidenPercentage}
+        />
+        <DiagramWrapper>
+          {+data.trump_h > +data.biden_h ? (
+            <TrumpDiagram percentage={100 - bidenPercentage} />
+          ) : (
+            <BidenDiagram percentage={bidenPercentage} />
+          )}
+        </DiagramWrapper>
+      </CountyCard>
+    </StyledEngineProvider>
+  ) : (
+    ""
   );
 };
