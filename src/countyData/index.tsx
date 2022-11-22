@@ -1,27 +1,12 @@
 // @ts-ignore
-import React from "react";
+import { StyledEngineProvider } from "@mui/material";
+import { useEffect, useState } from "react";
 import { CursorPosition } from "../App";
-import { CountyDataCard } from "./ui";
-
-// Get card's position on the display by cursor position
-const getPosition = (cursorPosition: CursorPosition) => {
-  const left = cursorPosition.x - 30 > 16 ? cursorPosition.x - 30 : 16;
-  const top = cursorPosition.y + 40;
-
-  return {
-    left: left < window.innerWidth - 482 ? left : window.innerWidth - 482,
-    top: top < window.innerHeight - 210 ? top : top - 235,
-    pin: {
-      direction: top < window.innerHeight - 210 ? "up" : "down",
-      left:
-        left < window.innerWidth - 482
-          ? 26
-          : 26 + left - window.innerWidth + 482 < 433
-          ? 26 + left - window.innerWidth + 482
-          : 433,
-    },
-  };
-};
+import { CandidatesInfo } from "./candidatesInfo";
+import { CardHeader } from "./cardHeader";
+import { BidenDiagram, TrumpDiagram } from "./diagram";
+import { CountyCard, DiagramWrapper } from "./styled";
+import { getPosition } from "./utils";
 
 type Props = {
   data: any;
@@ -32,8 +17,30 @@ export const CountyData = ({ data, cursorPosition }: Props) => {
   if (!data.total_h || !cursorPosition) return null;
   const { left, top, pin } = getPosition(cursorPosition);
 
+  const [bidenPercentage, setBidenPercentage] = useState<number>(0);
+  useEffect(() => {
+    setBidenPercentage(Math.round((+data.biden_h / +data.total_h) * 100));
+  }, [data.trump_h, data.biden_h]);
+
   return left && top ? (
-    <CountyDataCard x={left} y={top} pin={pin} data={data} />
+    <StyledEngineProvider injectFirst>
+      <CountyCard left={left} top={top} pin={pin}>
+        <CardHeader county={data.name} state={data.state}></CardHeader>
+        <CandidatesInfo
+          bidenVal={data.biden_h}
+          bidenPer={bidenPercentage}
+          trumpVal={data.trump_h}
+          trumpPer={100 - bidenPercentage}
+        />
+        <DiagramWrapper>
+          {+data.trump_h > +data.biden_h ? (
+            <TrumpDiagram percentage={100 - bidenPercentage} />
+          ) : (
+            <BidenDiagram percentage={bidenPercentage} />
+          )}
+        </DiagramWrapper>
+      </CountyCard>
+    </StyledEngineProvider>
   ) : (
     ""
   );
