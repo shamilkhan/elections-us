@@ -1,7 +1,7 @@
 // @ts-ignore
 import { StyledEngineProvider } from "@mui/material";
 import { useEffect, useState } from "react";
-import { CursorPosition } from "../App";
+import { CursorPosition } from "../map";
 import { CandidatesInfo } from "./candidatesInfo";
 import { CardHeader } from "./cardHeader";
 import { BidenDiagram, TrumpDiagram } from "./diagram";

@@ -1,25 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import { App } from "./App";
+import { createRoot } from "react-dom/client";
+import { App } from "./app";
+import "./app/styles/index.scss";
 import reportWebVitals from "./reportWebVitals";
 
-import { BaseProvider, DarkTheme } from "baseui";
-import { Provider as StyletronProvider } from "styletron-react";
-import { Client as Styletron } from "styletron-engine-atomic";
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(document.getElementById("root")!);
 
-const engine = new Styletron();
-
-ReactDOM.render(
-  <React.StrictMode>
-    <StyletronProvider value={engine}>
-      <BaseProvider theme={DarkTheme}>
-        <App />
-      </BaseProvider>
-    </StyletronProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+root.render(<App />);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
