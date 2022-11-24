@@ -1,4 +1,4 @@
-import { CursorPosition } from "../App";
+import { CursorPosition } from "../map";
 
 // Get left position
 const getLeft = (cursorX: number) => {
