@@ -76,3 +76,15 @@ export const getColor = (f: any) => {
 
   return convertHEXcolorToRGBA(palette[index]);
 };
+
+// Get empty polygon for hover layer
+export const getEmptyPolygon = () => {
+  return {
+    type: "Feature",
+    properties: {},
+    geometry: {
+      type: "Polygon",
+      coordinates: [[[0, 0]]],
+    },
+  };
+};

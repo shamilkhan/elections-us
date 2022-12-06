@@ -20,7 +20,7 @@ export const LoaderContent = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-family: Rubik;
+  font-family: Rubik, sans-serif;
 `;
 
 export const LoaderHeader = styled.h1`
