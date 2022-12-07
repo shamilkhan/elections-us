@@ -53,6 +53,8 @@ type CountyNameProps = {
   str: string;
   filter: string;
 };
+
+// County name with highlited filter
 const CountyName = ({ str, filter }: CountyNameProps) => {
   const i = str.toLowerCase().indexOf(filter.toLowerCase());
   return (
