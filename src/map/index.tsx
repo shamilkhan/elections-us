@@ -11,6 +11,7 @@ import { withProviders } from "../app/hocs/withProviders";
 import { useEffect } from "react";
 import { ZoomControls } from "../zoomControls";
 import { SearchForm } from "../searchForm";
+import { Legend } from "../legend";
 
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -111,6 +112,7 @@ const Map = () => {
         <>
           <ZoomControls />
           <SearchForm data={data} />
+          <Legend />
         </>
       )}
       <DeckGL
