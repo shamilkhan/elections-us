@@ -20,6 +20,8 @@
     "@types/styletron-react": "^5.0.2",
     "baseui": "^9.112.0",
     "deck.gl": "^8.3.15",
+    "effector": "^22.4.0",
+    "effector-react": "^22.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-map-gl": "5.2.5",
