@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import { useStore } from "effector-react";
-import { CandidatesInfo } from "./candidates-info";
-import { CardHeader } from "./card-header";
-import { BidenDiagram, TrumpDiagram } from "./diagram";
+import { CandidatesInfo, CardHeader, BidenDiagram, TrumpDiagram } from "./ui";
 import { $countyCardData, $countyCardPosition } from "./model";
 
 export const CountyCard = () => {

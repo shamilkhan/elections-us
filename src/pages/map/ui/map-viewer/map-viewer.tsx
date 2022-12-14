@@ -2,11 +2,11 @@ import DeckGL from "@deck.gl/react";
 import { useStore } from "effector-react";
 import { mapViewerModel } from ".";
 import { StaticMap } from "react-map-gl";
-import { getEmptyPolygon, renderLayers } from "./lib";
 import { useCallback, useEffect } from "react";
 import { PickInfo } from "deck.gl";
-import { mapModel } from "../../pages/map";
-import { countyCardModel } from "../county-card";
+import { mapModel } from "../..";
+import { countyCardModel } from "../../../../features";
+import { getEmptyPolygon, renderLayers } from "./model";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 const isDark = true;

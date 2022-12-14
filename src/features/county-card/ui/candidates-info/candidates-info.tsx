@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useStore } from "effector-react";
-import { $votesData } from "../model";
-import { getColor } from "./lib";
+import { $votesData } from "../../model";
+import { getColor } from "./";
 
 export const CandidatesInfo = () => {
   const data = useStore($votesData);

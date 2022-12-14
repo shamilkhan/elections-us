@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import centroid from "@turf/centroid";
-import { abbToState } from "./lib";
+import { abbToState } from "./";
 import { useStore } from "effector-react";
-import { mapViewerModel } from "../../map-viewer";
+import { mapViewerModel } from "../../../../pages/map/ui/map-viewer";
 import styled from "@emotion/styled";
 
 type FoundedFeaturesProps = {

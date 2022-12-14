@@ -1,11 +1,10 @@
 import { useStore } from "effector-react";
 import { mapModel } from ".";
-import { CountyCard, ZoomControls } from "../../features";
-import { FindCounty, MapViewer } from "../../features";
-import { useContext } from "react";
+import { CountyCard, ZoomControls, FindCounty } from "../../features";
+import { useCallback, useContext } from "react";
 import { LoadProgressContext } from "..";
 import { useEffect } from "react";
-import { Legend } from "./map-legend";
+import { MapViewer, mapViewerModel, Legend } from "./ui";
 
 const MapPage = () => {
   const progress = useStore(mapModel.$fetchProgress);
@@ -15,11 +14,15 @@ const MapPage = () => {
     setLoadProgress(progress);
   }, [progress]);
 
+  const onZoom = useCallback((scale: number) => {
+    mapViewerModel.events.zoom(scale);
+  }, []);
+
   return (
     <>
       <MapViewer />
       <CountyCard />
-      <ZoomControls />
+      <ZoomControls onZoom={onZoom} />
       <Legend />
       <FindCounty />
     </>

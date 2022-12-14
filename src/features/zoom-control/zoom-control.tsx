@@ -1,11 +1,14 @@
 import styled from "@emotion/styled";
-import { mapViewerModel } from "../map-viewer";
 
-export const ZoomControls = () => {
+type ZoomControlsProps = {
+  onZoom: (scale: number) => void;
+};
+
+export const ZoomControls = ({ onZoom }: ZoomControlsProps) => {
   return (
     <ZoomControlsContainer>
-      <ZoomIn onClick={() => mapViewerModel.events.zoom(0.5)} />
-      <ZoomOut onClick={() => mapViewerModel.events.zoom(-0.5)} />
+      <ZoomIn onClick={() => onZoom(0.5)} />
+      <ZoomOut onClick={() => onZoom(-0.5)} />
     </ZoomControlsContainer>
   );
 };

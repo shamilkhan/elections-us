@@ -3,7 +3,7 @@ import { useStore } from "effector-react";
 import { useCallback, useEffect } from "react";
 import { findCountyModel } from ".";
 import { mapModel } from "../../pages/map";
-import { FoundedFeatures } from "./founded-features";
+import { FoundedFeatures } from "./ui";
 
 export const FindCounty = () => {
   // Input open state
