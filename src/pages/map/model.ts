@@ -4,7 +4,7 @@ const fetchDataFx = createEffect(async () => {
   // us-counties-result bytes
   // const fixedLength = 4291014;
   // us-counties-result-new bytes
-  const fixedLength = 4237403;
+  const fixedLength = 4237416;
   const fetchData = new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "/data/us-counties-results-new.json", true);

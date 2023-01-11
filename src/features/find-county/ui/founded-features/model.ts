@@ -1,4 +1,6 @@
 // @ts-nocheck
+import { createEvent, createStore } from "effector";
+
 const states = {
   AL: "Alabama",
   AK: "Alaska",
@@ -65,3 +67,14 @@ const states = {
 export const abbToState = (abb: string) => {
   return states[abb];
 };
+
+type FlyToCoords = {
+  longitude: number;
+  latitude: number;
+};
+
+export const setFlyToCoords = createEvent<FlyToCoords>();
+export const $flyToCoords = createStore<FlyToCoords | null>(null).on(
+  setFlyToCoords,
+  (_, payload) => payload
+);

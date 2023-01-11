@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import centroid from "@turf/centroid";
-import { abbToState } from "./";
-import { useStore } from "effector-react";
-import { mapViewerModel } from "../../../../pages/map/ui/map-viewer";
+import { abbToState, setFlyToCoords } from "./";
 import styled from "@emotion/styled";
 
 type FoundedFeaturesProps = {
@@ -17,20 +15,15 @@ export const FoundedFeatures = ({
   filter,
   handleClose,
 }: FoundedFeaturesProps) => {
-  const viewState = useStore(mapViewerModel.$viewState);
-
   // Fly to county onClick
-  const handleClick = useCallback(
-    (feature: any) => {
-      const [longitude, latitude] = centroid(feature).geometry.coordinates;
-      mapViewerModel.events.flyTo({
-        latitude,
-        longitude,
-      });
-      handleClose();
-    },
-    [viewState]
-  );
+  const handleClick = useCallback((feature: any) => {
+    const [longitude, latitude] = centroid(feature).geometry.coordinates;
+    setFlyToCoords({
+      latitude,
+      longitude,
+    });
+    handleClose();
+  }, []);
 
   return (
     <Features>
